@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Brightness notification
+function notify_brightness() {
+    MAX_BRIGHTNESS=$(brightnessctl max)
+    CURRENT_BRIGHTNESS=$(brightnessctl get)
+    BRIGHTNESS_PERCENT=$(( CURRENT_BRIGHTNESS * 100 / MAX_BRIGHTNESS ))
+
+    NOTIFY_REPLACE_ID=555
+    ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" " Brightness: $BRIGHTNESS_PERCENT%"
+}
+
+if [[ "$1" == 'inc' ]]; then
+    brightnessctl set +5%
+    notify_brightness
+elif [[ "$1" == 'dec' ]]; then
+    brightnessctl set 5%-
+    notify_brightness
+fi

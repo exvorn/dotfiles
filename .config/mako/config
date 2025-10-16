@@ -1,0 +1,29 @@
+anchor=bottom-right
+background-color=#171717
+text-color=#ffffff
+text-alignment=center
+border-color=#3a86ff
+border-radius=5
+padding=15
+outer-margin=8,0,8,0
+width=350
+height=75
+font=Hack Regular 11
+
+[urgency=low]
+border-color=#3a86ff
+background-color=#1a1b26
+text-color=#c4c7cf
+font=Hack Regular 11
+
+[urgency=normal]
+border-color=#3a86ff
+background-color=#171717
+text-color=#f8f8f2
+font=Hack Regular 11
+
+[urgency=critical]
+border-color=#ff4545
+background-color=#000000
+text-color=#ffffff
+font=Hack Bold 11

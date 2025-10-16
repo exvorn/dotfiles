@@ -1,0 +1,109 @@
+* {
+    font-family: "Hack Regular", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    transition: background-color .3s ease-out;
+}
+
+window#waybar {
+    background: none;
+    color: #d5d5d7;
+    transition: background-color .5s;
+}
+
+.modules-left, .modules-right {
+    background: rgba(0, 0, 10, .95);
+    margin: 5px 10px;
+    padding: 0 5px;
+    border-radius: 15px;
+}
+
+.modules-left {
+    padding: 0;
+}
+
+.modules-center {
+    padding: 0 10px;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#language,
+#mpd {
+    padding: 0 10px;
+    border-radius: 15px;
+}
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#temperature:hover,
+#backlight:hover,
+#network:hover,
+#pulseaudio:hover,
+#wireplumber:hover,
+#custom-media:hover,
+#tray:hover,
+#mode:hover,
+#idle_inhibitor:hover,
+#scratchpad:hover,
+#power-profiles-daemon:hover,
+#language:hover,
+#mpd:hover {
+    background: rgba(26, 27, 38, 0.9);
+}
+
+#workspaces button {
+  background: transparent;
+  font-weight: 900;
+  font-size: 13pt;
+  color: #d5d5d5;
+  border-radius: 0;
+  border-bottom: 2px solid #05a6f7;
+}
+
+#workspaces button:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+#workspaces button.empty {
+    border: none;
+}
+
+#workspaces button.active {
+    background: #142d57;
+}
+
+#workspaces button:hover {
+  background: #1f4381;
+  color: #cdd6f4;
+  box-shadow: none;
+}
+
+#custom-arch {
+    color: #1793d1;
+    margin-left: 5px;
+    padding: 0 10px;
+    font-size: 25px;
+    transition: color .5s;
+}
+
+#custom-arch:hover {
+    color: #05a6f7;
+}

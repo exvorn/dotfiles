@@ -1,0 +1,18 @@
+{
+    "editor.minimap.enabled": false,
+    "workbench.startupEditor": "none",
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "workbench.colorTheme": "One Dark Pro Night Flat",
+    "editor.fontLigatures": false,
+    "editor.fontFamily": "Hack",
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "editor.inlineSuggest.edits.allowCodeShifting": "never",
+    "inlineChat.lineNaturalLanguageHint": false,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "typescriptreact": false
+    }
+}

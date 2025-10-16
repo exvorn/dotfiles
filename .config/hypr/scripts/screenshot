@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Capture screenshot
+screenshot="$(slurp)"
+
+if [ -z "$screenshot" ]; then
+    exit 0
+fi
+
+# Process the screenshot and copy to clipboard
+grim -g "$screenshot" - | convert - -shave 2x2 PNG:- | wl-copy
+
+# Notify screenshot has copied to clipboard
+NOTIFY_REPLACE_ID=558
+~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" ' Screenshot has been copied to clipboard'
+
+# Paste to clipboard and use swappy for further processing
+wl-paste | swappy -f -

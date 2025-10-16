@@ -1,0 +1,38 @@
+#!/bin/bash
+
+notify_volume() {
+    NOTIFY_REPLACE_ID=556
+    WPCTL_OUTPUT=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+
+    if echo "$WPCTL_OUTPUT" | grep -q '[MUTED]'; then
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" ' Volume: Muted'
+    else
+        CURRENT_VOLUME=$(echo "$WPCTL_OUTPUT" | awk '{print int($2 * 100)}')
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" " Volume: $CURRENT_VOLUME%"
+    fi
+}
+
+notify_mic() {
+    NOTIFY_REPLACE_ID=557
+    WPCTL_OUTPUT=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
+
+    if echo "$WPCTL_OUTPUT" | grep -q '[MUTED]'; then
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" ' Microphone: Muted'
+    else
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" ' Microphone: Unmuted'
+    fi
+}
+
+if [[ "$1" == 'inc' ]]; then
+    wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+    notify_volume
+elif [[ "$1" == 'dec' ]]; then
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+    notify_volume
+elif [[ "$1" == 'mute-audio' ]]; then
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    notify_volume
+elif [[ "$1" == 'mute-mic' ]]; then
+    wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+    notify_mic
+fi

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+## CRON="*/2 * * * * $HOME/.config/hypr/scripts/battery-alert"
+## (crontab -l 2>/dev/null | grep -v "$HOME/.config/hypr/scripts/battery-alert" || true; echo "$CRON") | crontab -
+
+# Ensure GUI notifications can be displayed when running from cron or non-interactive shells
+# DBUS_SESSION_BUS_ADDRESS sets the D-Bus address for the current user's graphical session
+export DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+
+NOTIFY_REPLACE_ID=559
+THRESHOLD_WARNING=20
+LOCKFILE_WARNING='/tmp/battery_low_warning.lock'
+THRESHOLD_CRITICAL=10
+LOCKFILE_CRITICAL='/tmp/battery_low_critical.lock'
+
+BATTERY_LEVEL=$(cat /sys/class/power_supply/BAT*/capacity)
+BATTERY_STATUS=$(cat /sys/class/power_supply/BAT*/status)
+
+# Exit if the battery is charging
+if [[ "$BATTERY_STATUS" == 'Charging' ]]; then
+    exit 0
+fi
+
+if [ "$BATTERY_LEVEL" -le $THRESHOLD_WARNING ] && [ "$BATTERY_LEVEL" -gt "$THRESHOLD_CRITICAL" ]; then
+    if [ ! -f "$LOCKFILE_WARNING" ]; then
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" " Battery is at $BATTERY_LEVEL%" "critical" 60000
+        touch "$LOCKFILE_WARNING"
+    fi
+elif [ "$BATTERY_LEVEL" -le "$THRESHOLD_CRITICAL" ]; then
+    if [ ! -f "$LOCKFILE_CRITICAL" ]; then
+        ~/.config/hypr/scripts/notify "$NOTIFY_REPLACE_ID" " Battery is at $BATTERY_LEVEL%" "critical" 60000
+        touch "$LOCKFILE_CRITICAL"
+    fi
+else
+    # Battery is above thresholds, remove lock if exists
+    [ -f "$LOCKFILE_WARNING" ] && rm "$LOCKFILE_WARNING"
+    [ -f "$LOCKFILE_CRITICAL" ] && rm "$LOCKFILE_CRITICAL"
+fi

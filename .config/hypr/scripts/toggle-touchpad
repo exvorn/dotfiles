@@ -1,0 +1,45 @@
+#!/bin/bash
+
+TOUCHPAD=$(hyprctl devices | grep 'touchpad' | head -n1 | awk '{print $1}')
+
+# Exit if there's no touchpad
+if [ -z "$TOUCHPAD" ]; then
+    exit 0
+fi
+
+STATUS_DIR="$HOME/.local/state/hypr"
+STATUS_FILE="$STATUS_DIR/touchpad_status"
+
+# Toggle touchpad function
+toggle_touchpad() {
+    local state=$1
+    hyprctl keyword "device[$TOUCHPAD]:enabled" "$state" 1>/dev/null
+}
+
+# Create status dir if doesn't exist
+if [ ! -d "$STATUS_DIR" ]; then
+    mkdir -p "$STATUS_DIR"
+fi
+
+# Create status file if doesn't exist and enable touchpad
+if [ ! -f "$STATUS_FILE" ]; then
+    echo -n 1 > "$STATUS_FILE"
+    toggle_touchpad true
+fi
+
+OPTION=$1
+STATUS=$(cat "$STATUS_FILE")
+
+if [[ "$OPTION" == 'boot' ]]; then
+    [[ "$STATUS" == '1' ]] && { toggle_touchpad true; } || { toggle_touchpad false; }
+elif [[ "$OPTION" == 'toggle' ]]; then
+    if [[ "$STATUS" == '1' ]]; then
+        # Disable touchpad
+        toggle_touchpad false
+        echo -n 0 > "$STATUS_FILE"
+    else
+        # Enable touchpad
+        toggle_touchpad true
+        echo -n 1 > "$STATUS_FILE"
+    fi
+fi

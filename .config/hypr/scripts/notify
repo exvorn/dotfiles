@@ -1,0 +1,8 @@
+#!/bin/bash
+
+REPLACE_ID=$1
+MESSAGE=$2
+URGENCY_LEVEL="${3:-normal}"
+DURATION="${4:-4000}"
+
+notify-send -h string:x-canonical-private-synchronous:"$REPLACE_ID" --urgency="$URGENCY_LEVEL" -t "$DURATION" "$MESSAGE"
