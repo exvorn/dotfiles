@@ -61,7 +61,7 @@ install_packages() {
 
     local packages=(
         linux-firmware sof-firmware networkmanager alsa-utils pipewire pipewire-pulse pavucontrol
-        hyprland hyprpaper hyprlock hypridle waybar kitty wofi ly wl-clipboard thunar cmatrix
+        hyprland hyprpaper hyprlock hypridle waybar kitty zsh wofi ly wl-clipboard thunar cmatrix
         mako brightnessctl cronie neovim tmux lsd slurp grim imagemagick swappy wireplumber
         xdg-desktop-portal-hyprland ttf-jetbrains-mono ttf-hack ttf-dejavu ttf-liberation htop
         firefox-developer-edition chromium git python noto-fonts noto-fonts-cjk noto-fonts-emoji
