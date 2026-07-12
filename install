@@ -18,7 +18,7 @@ BASEDIR="$(dirname "$(readlink -f "$0")")"
 if [ ! -f "$BASEDIR/.zshrc" ] ||
     [ ! -f "$BASEDIR/.tmux.conf" ] ||
     [ ! -d "$BASEDIR/.config" ] ||
-    [ ! -d "$BASEDIR/.config/Code" ] ||
+    [ ! -d "$BASEDIR/.config/Code - OSS" ] ||
     [ ! -d "$BASEDIR/.config/hypr" ] ||
     [ ! -d "$BASEDIR/.config/kitty" ] ||
     [ ! -d "$BASEDIR/.config/mako" ] ||
@@ -64,14 +64,9 @@ install_packages() {
         hyprland hyprpaper hyprlock hypridle waybar kitty zsh wofi ly wl-clipboard thunar cmatrix
         mako brightnessctl cronie neovim tmux lsd slurp grim imagemagick swappy wireplumber
         xdg-desktop-portal-hyprland ttf-jetbrains-mono ttf-hack ttf-dejavu ttf-liberation htop
-        firefox-developer-edition chromium git python noto-fonts noto-fonts-cjk noto-fonts-emoji
+        firefox-developer-edition git python noto-fonts noto-fonts-cjk noto-fonts-emoji code
     )
     sudo pacman -S --needed --noconfirm "${packages[@]}"
-
-    # Oh-My-Zsh
-    if [ ! -d "$HOME/.oh-my-zsh" ]; then
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    fi
 
     # Python Virtual Environment
     python -m venv ~/venv
@@ -88,11 +83,6 @@ install_packages() {
         mkdir -p "$local_src_path"
         git clone https://aur.archlinux.org/paru.git "$local_src_path/paru"
         (cd "$local_src_path/paru" && makepkg -si)
-    fi
-
-    # Visual Studio Code
-    if ! pacman -Q visual-studio-code-bin >/dev/null 2>&1; then
-        paru -S --noconfirm visual-studio-code-bin
     fi
 
     echo -e '\n[+] Successfully installed all necessary packages.\n'
@@ -127,7 +117,7 @@ install_dotfiles() {
         "$HOME/.config/swappy"
         "$HOME/.config/waybar"
         "$HOME/.config/wofi"
-        "$HOME/.config/Code"
+        "$HOME/.config/Code - OSS"
     )
 
     for item in "${managed_items[@]}"; do
@@ -151,7 +141,7 @@ install_dotfiles() {
     (crontab -l 2>/dev/null | grep -v "$HOME/.config/hypr/scripts/battery-alert" || true; echo "$CRON") | crontab -
 
     # Visual Studio Code extensions
-    local vscode_extensions=(github.copilot github.copilot-chat zhuangtongfa.material-theme)
+    local vscode_extensions=(zhuangtongfa.material-theme miguelsolorio.symbols)
 
     if command -v code >/dev/null 2>&1; then
         for ext in "${vscode_extensions[@]}"; do
