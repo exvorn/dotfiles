@@ -1,122 +1,123 @@
 # Maintained by exvorn (Jovan Bogovac)
 # https://github.com/exvorn/dotfiles
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# Compinit 24h cache - requires extendedglob for the #q qualifier
+autoload -Uz compinit
+setopt EXTENDED_GLOB
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+if [[ -n ~/.zcompdump*(#qN.mh+24) ]]; then
+    compinit
+else
+    compinit -C
+fi
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME=""
-PS1='%F{blue}%n%F{green}@%F{blue}%m%F{green}:%F{blue}%~ %F{red}$(git_prompt_info)%f%(?.%F{green}.%F{red})%#%f '
+# Optimized Completion System
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' accept-exact true
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' sort false
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Better History Management
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt PROMPT_SUBST
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# Git prompt
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats '%F{red}(%b)%f '
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# Runs before every prompt display
+precmd() { vcs_info }
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# Prompt
+PROMPT='%F{blue}%n%F{green}@%F{blue}%m%F{green}:%F{blue}%~ ${vcs_info_msg_0_}%(?.%F{green}.%F{red})%#%f '
 
 # Environment variables
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1 # Disable python venv prompt
+export PATH="$HOME/.local/bin:$PATH"
 
-# Activate Python Virtual Environment
-source ~/venv/bin/activate
+# Lazy loading for external scripts
+# Node Version Manager
+nvm() {
+    unset -f nvm
+    source /usr/share/nvm/init-nvm.sh
+    nvm "$@"
+}
+
+# Python version manager
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+[[ -d "$PYENV_ROOT/shims" ]] && export PATH="$PYENV_ROOT/shims:$PATH"
+
+pyenv() {
+    unset -f pyenv
+    
+    if command -v pyenv >/dev/null 2>&1; then
+        eval "$(command pyenv init -)"
+        pyenv "$@"
+    else
+        echo "pyenv not found in $PYENV_ROOT/bin" >&2
+        return 127
+    fi
+}
 
 # Aliases
-alias ls="lsd -a"
-alias clip="wl-copy"
-alias firefox="firefox-developer-edition"
-alias lock="hyprlock 1>/dev/null"
-alias feh="kitty +kitten icat"
-alias ssh="TERM=xterm ssh"
+alias ls='lsd -a'
+alias clip='wl-copy'
+alias firefox='firefox-developer-edition'
+alias lock='hyprlock 1>/dev/null'
+alias feh='kitty +kitten icat'
+alias ssh='TERM=xterm ssh'
+
+# Extract helper function
+extract() {
+    if [[ -z "$1" ]]; then
+        echo "Error: No file specified. Usage: extract <archive_file>" >&2
+        return 1
+    fi
+
+    if [[ ! -f "$1" ]]; then
+        echo "Error: File '$1' does not exist or is not a regular file." >&2
+        return 1
+    fi
+
+    case "$1" in
+        *.tar.bz2)   tar xjf "$1"     ;;
+        *.tar.gz)    tar xzf "$1"     ;;
+        *.bz2)       bunzip2 "$1"     ;;
+        *.rar)       unrar x "$1"     ;;
+        *.gz)        gunzip "$1"      ;;
+        *.tar)       tar xf "$1"      ;;
+        *.tbz2)      tar xjf "$1"     ;;
+        *.tgz)       tar xzf "$1"     ;;
+        *.zip)       unzip "$1"       ;;
+        *.Z)         uncompress "$1"  ;;
+        *.7z)        7z x "$1"        ;;
+        *)           echo "'$1' cannot be extracted via extract()" ;;
+    esac
+}
+
+# Better key bindings
+bindkey '^[[A' history-search-backward
+bindkey '^[[B' history-search-forward
+bindkey '^R' history-incremental-search-backward
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# pnpm
+export PNPM_HOME="/home/exvorn/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
