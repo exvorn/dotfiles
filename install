@@ -60,8 +60,9 @@ install_packages() {
     echo -e '[+] Installing essential packages...\n'
 
     local packages=(
-        linux-firmware sof-firmware networkmanager alsa-utils pipewire pipewire-pulse pavucontrol
-        hyprland hyprpaper hyprlock hypridle waybar kitty zsh wofi ly wl-clipboard thunar cmatrix
+        linux-firmware base-devel debugedit sof-firmware networkmanager
+        alsa-utils pipewire pipewire-pulse pavucontrol hyprland hyprpaper
+        hyprlock hypridle waybar kitty zsh wofi ly wl-clipboard thunar cmatrix
         mako brightnessctl cronie neovim tmux lsd slurp grim imagemagick swappy wireplumber
         xdg-desktop-portal-hyprland ttf-jetbrains-mono ttf-hack ttf-dejavu ttf-liberation htop
         firefox-developer-edition git python noto-fonts noto-fonts-cjk noto-fonts-emoji code
@@ -79,24 +80,36 @@ install_packages() {
 
     # Paru (only if not installed)
     if ! command -v paru >/dev/null 2>&1; then
+        echo -e '[+] Installing paru-bin...\n'
+
         local local_src_path="$HOME/.local/src"
+        local paru_path="$local_src_path/paru-bin"
         mkdir -p "$local_src_path"
-        git clone https://aur.archlinux.org/paru.git "$local_src_path/paru"
-        (cd "$local_src_path/paru" && makepkg -si)
+        rm -rf "$paru_path"
+        git clone --depth=1 https://aur.archlinux.org/paru-bin.git "$paru_path"
+        (
+            cd "$paru_path" || exit 1
+            makepkg -si --noconfirm --needed
+        )
+
+        # Clean up source files after installation
+        rm -rf "$paru_path"
     fi
 
     echo -e '\n[+] Successfully installed all necessary packages.\n'
     echo -e '[+] Enabling and starting systemd services...'
 
     local system_services=(
-        NetworkManager ly cronie
+        NetworkManager ly@tty2.service cronie
     )
     local user_services=(
         pipewire pipewire-pulse wireplumber
         xdg-desktop-portal xdg-desktop-portal-hyprland
     )
-    sudo systemctl enable --now "${system_services[@]}" 
-    systemctl --user enable --now "${user_services[@]}" 
+
+    sudo systemctl disable getty@tty2.service # Disable getty (replace with your current DM if necessary)
+    sudo systemctl enable --now "${system_services[@]}"
+    systemctl --user enable --now "${user_services[@]}"
 
     echo -e '[+] Services enabled and started successfully.\n'
 }
