@@ -1,5 +1,5 @@
-# Maintained by exvorn (Jovan Bogovac)
-# https://github.com/exvorn/dotfiles
+# Maintained by baxvis (Jovan Bogovac)
+# https://github.com/baxvis/dotfiles
 
 # Compinit 24h cache - requires extendedglob for the #q qualifier
 autoload -Uz compinit
@@ -116,7 +116,7 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 
 # pnpm
-export PNPM_HOME="/home/exvorn/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;

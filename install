@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Dotfiles & Hyprland Rice Installation Script
-# Created & Maintained by exvorn (Jovan Bogovac)
-# https://github.com/exvorn/dotfiles
+# Created & Maintained by baxvis (Jovan Bogovac)
+# https://github.com/baxvis/dotfiles
 #
 # This script automates setting up your Linux compositor and CLI/program configurations.
 # It installs essential packages, dotfiles, themes, wallpaper, and customizations

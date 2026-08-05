@@ -23,7 +23,7 @@ This repository contains curated dotfiles and a comprehensive installation scrip
 Clone the repository and run the installer:
 
 ```sh
-git clone https://github.com/exvorn/dotfiles.git
+git clone https://github.com/baxvis/dotfiles.git
 cd dotfiles
 chmod +x install
 ./install --all
@@ -165,7 +165,7 @@ Modules shown in the top bar (left to right):
 
 ## Author
 
-Created & maintained by [Jovan Bogovac](https://github.com/exvorn)
+Created & maintained by [Jovan Bogovac](https://github.com/baxvis)
 
 ## Contributing
 
